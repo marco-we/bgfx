@@ -1944,6 +1944,8 @@ int _main_(int _argc, char** _argv)
 			bgfx::createTexture2D(currentShadowMapSize, currentShadowMapSize, 1, bgfx::TextureFormat::BGRA8, BGFX_TEXTURE_RT),
 			bgfx::createTexture2D(currentShadowMapSize, currentShadowMapSize, 1, bgfx::TextureFormat::D24S8),
 		};
+        bgfx::setTextureLabel(fbtextures[0], "fb_depth_colour");
+        bgfx::setTextureLabel(fbtextures[1], "fb_depth_d24s8");
 		s_rtShadowMap[ii] = bgfx::createFrameBuffer(BX_COUNTOF(fbtextures), fbtextures, true);
 	}
 	s_rtBlur = bgfx::createFrameBuffer(currentShadowMapSize, currentShadowMapSize, bgfx::TextureFormat::BGRA8);

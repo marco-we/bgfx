@@ -2189,6 +2189,9 @@ namespace bgfx { namespace gl
 		{
 			m_textures[_handle.idx].destroy();
 		}
+        
+        void setTextureLabel(TextureHandle _handle, const char* _label)
+        {}
 
 		void createFrameBuffer(FrameBufferHandle _handle, uint8_t _num, const TextureHandle* _textureHandles) BX_OVERRIDE
 		{

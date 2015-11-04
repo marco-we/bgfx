@@ -629,6 +629,9 @@ BGFX_C_API void bgfx_update_texture_cube(bgfx_texture_handle_t _handle, uint8_t 
 BGFX_C_API void bgfx_destroy_texture(bgfx_texture_handle_t _handle);
 
 /**/
+BGFX_C_API void bgfx_set_texture_label(bgfx_texture_handle_t _handle, const char* _label);
+
+/**/
 BGFX_C_API bgfx_frame_buffer_handle_t bgfx_create_frame_buffer(uint16_t _width, uint16_t _height, bgfx_texture_format_t _format, uint32_t _textureFlags);
 
 /**/

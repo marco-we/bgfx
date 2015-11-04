@@ -2129,6 +2129,20 @@ again:
 					m_renderCtx->destroyTexture(handle);
 				}
 				break;
+                    
+            case CommandBuffer::SetTextureLabel:
+                {
+                    TextureHandle handle;
+                    _cmdbuf.read(handle);
+                    
+                    uint16_t len;
+                    _cmdbuf.read(len);
+                    
+                    const char* name = (const char*)_cmdbuf.skip(len);                    
+                    
+                    m_renderCtx->setTextureLabel(handle, name);
+                }
+                break;
 
 			case CommandBuffer::CreateFrameBuffer:
 				{
@@ -2904,6 +2918,12 @@ again:
 		BGFX_CHECK_MAIN_THREAD();
 		s_ctx->destroyTexture(_handle);
 	}
+    
+    void setTextureLabel(TextureHandle _handle, const char* _label)
+    {
+        BGFX_CHECK_MAIN_THREAD();
+        s_ctx->setTextureLabel(_handle, _label);
+    }
 
 	void updateTexture2D(TextureHandle _handle, uint8_t _mip, uint16_t _x, uint16_t _y, uint16_t _width, uint16_t _height, const Memory* _mem, uint16_t _pitch)
 	{
@@ -3944,6 +3964,12 @@ BGFX_C_API void bgfx_destroy_texture(bgfx_texture_handle_t _handle)
 {
 	union { bgfx_texture_handle_t c; bgfx::TextureHandle cpp; } handle = { _handle };
 	bgfx::destroyTexture(handle.cpp);
+}
+
+BGFX_C_API void bgfx_set_texture_label(bgfx_texture_handle_t _handle, const char* _label)
+{
+    union { bgfx_texture_handle_t c; bgfx::TextureHandle cpp; } handle = { _handle };
+    bgfx::destroyTexture(handle.cpp);
 }
 
 BGFX_C_API bgfx_frame_buffer_handle_t bgfx_create_frame_buffer(uint16_t _width, uint16_t _height, bgfx_texture_format_t _format, uint32_t _textureFlags)

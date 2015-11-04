@@ -575,6 +575,7 @@ namespace bgfx
 			CreateTexture,
 			UpdateTexture,
 			ResizeTexture,
+            SetTextureLabel,
 			CreateFrameBuffer,
 			CreateUniform,
 			UpdateViewName,
@@ -1963,6 +1964,7 @@ namespace bgfx
 		virtual void readTexture(TextureHandle _handle, void* _data) = 0;
 		virtual void resizeTexture(TextureHandle _handle, uint16_t _width, uint16_t _height) = 0;
 		virtual void destroyTexture(TextureHandle _handle) = 0;
+        virtual void setTextureLabel(TextureHandle _handle, const char* _label) = 0;
 		virtual void createFrameBuffer(FrameBufferHandle _handle, uint8_t _num, const TextureHandle* _textureHandles) = 0;
 		virtual void createFrameBuffer(FrameBufferHandle _handle, void* _nwh, uint32_t _width, uint32_t _height, TextureFormat::Enum _depthFormat) = 0;
 		virtual void destroyFrameBuffer(FrameBufferHandle _handle) = 0;
@@ -3010,6 +3012,23 @@ namespace bgfx
 
 			textureDecRef(_handle);
 		}
+        
+        BGFX_API_FUNC(void setTextureLabel(TextureHandle _handle, const char* _label) )
+        {
+            BGFX_CHECK_HANDLE("setTextureLabel", m_textureHandle, _handle);
+            
+            if (!isValid(_handle) )
+            {
+                BX_WARN(false, "Passing invalid texture handle to bgfx::setTextureLabel");
+                return;
+            }
+            
+            CommandBuffer& cmdbuf = getCommandBuffer(CommandBuffer::SetTextureLabel);
+            cmdbuf.write(_handle);
+            uint16_t len = (uint16_t)strlen(_label)+1;
+            cmdbuf.write(len);  
+            cmdbuf.write(_label, len);
+        }
 
 		BGFX_API_FUNC(void readTexture(TextureHandle _handle, void* _data) )
 		{

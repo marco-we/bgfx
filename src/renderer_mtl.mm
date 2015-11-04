@@ -664,6 +664,11 @@ namespace bgfx { namespace mtl
 		m_textures[_handle.idx].destroy();
 	}
 
+    void setTextureLabel(TextureHandle _handle, const char* _label)
+    {
+        m_textures[_handle.idx].m_ptr.m_obj.label = [NSString stringWithUTF8String:_label];
+    }
+
 	void createFrameBuffer(FrameBufferHandle _handle, uint8_t _num, const TextureHandle* _textureHandles) BX_OVERRIDE
 	{
 		m_frameBuffers[_handle.idx].create(_num, _textureHandles);
@@ -920,9 +925,9 @@ namespace bgfx { namespace mtl
 			m_textureDescriptor.mipmapLevelCount = 1;
 			m_textureDescriptor.sampleCount = 1;
 			m_textureDescriptor.arrayLength = 1;
-			m_textureDescriptor.resourceOptions = MTLResourceStorageModePrivate;
+//			m_textureDescriptor.resourceOptions = MTLResourceStorageModePrivate;
 			m_textureDescriptor.cpuCacheMode    = MTLCPUCacheModeDefaultCache;
-			m_textureDescriptor.storageMode     = MTLStorageModePrivate;
+//			m_textureDescriptor.storageMode     = MTLStorageModePrivate;
 			m_textureDescriptor.usage = MTLTextureUsageRenderTarget;
 
 			if (NULL != m_backBufferDepth)
@@ -1894,9 +1899,9 @@ namespace bgfx { namespace mtl
 			desc.depth  = bx::uint32_max(1,imageContainer.m_depth);
 			desc.mipmapLevelCount = imageContainer.m_numMips;
 			desc.sampleCount      = 1; //TODO: set samplecount -  If textureType is not MTLTextureType2DMultisample, the value must be 1.
-			desc.resourceOptions  = MTLResourceStorageModePrivate;
+//			desc.resourceOptions  = MTLResourceStorageModePrivate;
 			desc.cpuCacheMode     = MTLCPUCacheModeDefaultCache;
-
+#if 0
 			desc.storageMode = bufferOnly
 				? 2 /*MTLStorageModePrivate*/
 				: 1 /*MTLStorageModeManaged*/
@@ -1905,7 +1910,7 @@ namespace bgfx { namespace mtl
 				? MTLTextureUsageShaderWrite
 				: MTLTextureUsageShaderRead
 				;
-
+#endif
 			//TODO: set resource flags depending on usage(renderTarget/computeWrite/etc) on iOS9/OSX
 
 			m_ptr = s_renderMtl->m_device.newTextureWithDescriptor(desc);
@@ -2114,7 +2119,7 @@ namespace bgfx { namespace mtl
 
 		//TODO: acquire CAMetalDrawable just before we really need it. When we are using an encoder with target metalLayer's texture
 		m_drawable = m_metalLayer.nextDrawable;
-//		retain(m_drawable); // keep alive to be useable at 'flip'
+		retain(m_drawable); // keep alive to be useable at 'flip'
 
 		m_uniformBufferVertexOffset = 0;
 		m_uniformBufferFragmentOffset = 0;

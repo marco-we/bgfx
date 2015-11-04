@@ -1437,6 +1437,15 @@ namespace bgfx
 	/// @attention C99 equivalent is `bgfx_destroy_texture`.
 	///
 	void destroyTexture(TextureHandle _handle);
+    
+    /// Label texture.
+    ///
+    /// @param[in] _handle Texture handle.
+    /// @param[in] _label Texture label.
+    ///
+    /// @attention C99 equivalent is `bgfx_destroy_texture`.
+    ///
+    void setTextureLabel(TextureHandle _handle, const char* _label);
 
 	/// Create frame buffer (simple).
 	///
