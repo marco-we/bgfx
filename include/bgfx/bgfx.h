@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2015 Branimir Karadzic. All rights reserved.
+ * Copyright 2011-2016 Branimir Karadzic. All rights reserved.
  * License: https://github.com/bkaradzic/bgfx/blob/master/LICENSE
  */
 
@@ -530,6 +530,17 @@ namespace bgfx
 		uint8_t numMips;            //!< Number of MIP maps.
 		uint8_t bitsPerPixel;       //!< Format bits per pixel.
 		bool    cubeMap;            //!< Texture is cubemap.
+	};
+
+	/// Frame buffer texture attachemnt info.
+	///
+	/// @attention C99 equivalent is `bgfx_attachment_t`.
+	///
+	struct Attachment
+	{
+		TextureHandle handle; //!< Texture handle.
+		uint16_t mip;         //!< Mip level.
+		uint16_t layer;       //!< Cubemap side or depth layer/slice.
 	};
 
 	/// Transform data.
@@ -1362,8 +1373,8 @@ namespace bgfx
 	/// Update Cube texture.
 	///
 	/// @param[in] _handle Texture handle.
-	/// @param[in] _side Cubemap side, where 0 is +X, 1 is -X, 2 is +Y, 3 is
-	///   -Y, 4 is +Z, and 5 is -Z.
+	/// @param[in] _side Cubemap side `BGFX_CUBE_MAP_<POSITIVE or NEGATIVE>_<X, Y or Z>`,
+	///   where 0 is +X, 1 is -X, 2 is +Y, 3 is -Y, 4 is +Z, and 5 is -Z.
 	///
 	///                  +----------+
 	///                  |-z       2|
@@ -1469,6 +1480,17 @@ namespace bgfx
 	/// @attention C99 equivalent is `bgfx_create_frame_buffer_from_handles`.
 	///
 	FrameBufferHandle createFrameBuffer(uint8_t _num, const TextureHandle* _handles, bool _destroyTextures = false);
+
+	/// Create frame buffer.
+	///
+	/// @param[in] _num Number of texture attachments.
+	/// @param[in] _attachment Attachment texture info. See: `Attachment`.
+	/// @param[in] _destroyTextures If true, textures will be destroyed when
+	///   frame buffer is destroyed.
+	///
+	/// @attention C99 equivalent is `bgfx_create_frame_buffer_from_handles`.
+	///
+	FrameBufferHandle createFrameBuffer(uint8_t _num, const Attachment* _attachment, bool _destroyTextures = false);
 
 	/// Create frame buffer for multiple window rendering.
 	///
